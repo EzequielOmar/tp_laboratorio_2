@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Entidades
@@ -10,7 +11,7 @@ namespace Entidades
     {
         private double numero;
 
-        public string Double
+        public string SetNumero
         {
             set
             {
@@ -20,18 +21,15 @@ namespace Entidades
 
         public Numero()
         {
-            this.numero = 0;
+            this.SetNumero = "0";
         }
         public Numero(double numero)
         {
-            this.numero = numero;
+            this.SetNumero = numero.ToString();
         }
         public Numero(string strNumero)
         {
-            if (double.TryParse(strNumero, out double numero))
-            {
-                this.numero = numero;
-            }
+            this.SetNumero = strNumero;
         }
 
         private static bool EsBinario(string numero)
@@ -51,22 +49,38 @@ namespace Entidades
 
             return respuesta;
         }
-
         private static double ValidarNumero(string strNumero)
         {
             double numero = 0;
-            int i;
+            int i,coma = 0, negativo = 0;
 
             for (i = 0; i < strNumero.Length; i++)
             {
-                if (!double.TryParse(strNumero.Substring(i, 1), out _))
+                if (strNumero[i] == '-' && i == 0)
                 {
-                    break;
+                    negativo++;
+                    continue;
+                }
+                if (char.IsDigit(strNumero[i]))
+                {
+                    continue;
+                }
+                else
+                {
+                    if (strNumero[i] == '.' || strNumero[i] == ',')
+                    {
+                        coma++;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 
-            if (i == strNumero.Length)
+            if (i == strNumero.Length && coma < 2)
             {
+                strNumero = strNumero.Replace(".",",");
                 double.TryParse(strNumero, out numero);
             }
 
@@ -75,7 +89,7 @@ namespace Entidades
 
         public static string BinarioDecimal(string binario)
         {
-            string respuesta = "Valor invàlido";
+            string respuesta = "Valor inválido";
             int multiplicador = 1, entero = 0, aux, i;
 
             if (EsBinario(binario))
@@ -87,7 +101,7 @@ namespace Entidades
                     multiplicador *= 2;
                 }
 
-                if (i == 0)
+                if (i == -1)
                 {
                     respuesta = entero.ToString();
                 }
@@ -95,16 +109,17 @@ namespace Entidades
 
             return respuesta;
         }
-
         public static string DecimalBinario(string numero)
         {
             string binario = "Valor inválido";
             int resto, resultado;
 
-            if (double.TryParse(numero, out double dNumero))
+            Numero nm = new Numero(numero);
+
+            if ( nm.numero > 0 && int.TryParse(nm.numero.ToString(), out int iNumero))
             {
                 binario = "";
-                resultado = (int)dNumero;
+                resultado = iNumero;
                 do
                 {
                     resto = resultado % 2;
@@ -115,7 +130,6 @@ namespace Entidades
 
             return binario;
         }
-
         public static string DecimalBinario(double numero)
         {
             string binario;
@@ -135,7 +149,13 @@ namespace Entidades
         }
         public static double operator /(Numero n1, Numero n2)
         {
-            double respuesta = n1.numero / n2.numero;
+            double respuesta;
+            if(n2.numero == 0)
+            {
+                respuesta = double.MinValue;
+            } else {
+                respuesta = n1.numero / n2.numero;
+            }
             return respuesta;
         }
         public static double operator *(Numero n1, Numero n2)
