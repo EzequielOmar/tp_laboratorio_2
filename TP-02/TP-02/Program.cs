@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entidades;
 
 namespace TP_02_2018
 {
@@ -15,7 +16,7 @@ namespace TP_02_2018
             Console.SetWindowSize(Console.LargestWindowWidth / 2, Console.LargestWindowHeight - 2);
 
             // Nombre del alumno
-            Console.Title = "";
+            Console.Title = "Vazquez, Ezequiel Omar. Div: 2ºA.";
 
             Taller taller = new Taller(6);
 
@@ -39,15 +40,17 @@ namespace TP_02_2018
             taller += a3;
             taller += a4;
 
+            //muestro
             Console.WriteLine(taller.ToString());
             Console.WriteLine("<-----------PRESIONE UNA TECLA PARA CONTINUAR----------->");
             Console.ReadKey();
             Console.Clear();
 
-            // Quito 2 items y muestro
+            // Quito 2 items 
             taller -= c1;
             taller -= new Ciclomotor(Vehiculo.EMarca.Honda, "ASD913", ConsoleColor.Red);
 
+            //muestro
             Console.WriteLine(taller.ToString());
             Console.WriteLine("<-----------PRESIONE UNA TECLA PARA CONTINUAR----------->");
             Console.ReadKey();
@@ -69,7 +72,7 @@ namespace TP_02_2018
             Console.Clear();
 
             // Muestro solo Camioneta
-            Console.WriteLine(Taller.Listar(taller, Taller.ETipo.SUV));
+            Console.WriteLine(Taller.Listar(taller, Taller.ETipo.Suv));
             Console.WriteLine("<-------------PRESIONE UNA TECLA PARA SALIR------------->");
             Console.ReadKey();
         }

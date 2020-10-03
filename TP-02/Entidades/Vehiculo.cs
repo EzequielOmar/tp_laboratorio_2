@@ -9,46 +9,73 @@ namespace Entidades
     /// <summary>
     /// La clase Vehiculo no deberá permitir que se instancien elementos de este tipo.
     /// </summary>
-    public sealed class Vehiculo
+    public abstract class Vehiculo
     {
-        enum EMarca
+        #region Enumerados
+        public enum EMarca
         {
             Chevrolet, Ford, Renault, Toyota, BMW, Honda, HarleyDavidson
         }
-        enum ETamanio
+        public enum ETamanio
         {
             Chico, Mediano, Grande
         }
-        EMarca marca;
-        string chasis;
-        ConsoleColor color;
+        #endregion
 
+        #region Campos
+        private EMarca marca;
+        private string chasis;
+        private ConsoleColor color;
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// Constructor base. Inicializa con 3 paràmetros.
+        /// </summary>
+        /// <param name="marca"></param>
+        /// <param name="chasis"></param>
+        /// <param name="color"></param>
+        public Vehiculo(EMarca marca, string chasis, ConsoleColor color)
+        {
+            this.marca = marca;
+            this.chasis = chasis;
+            this.color = color;
+        }
+        #endregion
+
+        #region Propiedades
         /// <summary>
         /// ReadOnly: Retornará el tamaño
         /// </summary>
-        abstract ETamanio Tamanio { get; set; }
+        public abstract ETamanio Tamanio { get; }
+        #endregion
 
+        #region Mètodos
         /// <summary>
         /// Publica todos los datos del Vehiculo.
         /// </summary>
         /// <returns></returns>
-        sealed string Mostrar()
+        public virtual string Mostrar()
         {
-            return this;
+            return (string)this;
         }
+        #endregion
 
-        private static explicit operator string(Vehiculo p)
+        #region Sobrecargas
+        /// <summary>
+        /// Devuelve un string mostrando datos del Vehiculo
+        /// Pide por parámetro la instancia del Vehiculo
+        /// </summary>
+        /// <param name="p"></param>
+        public static explicit operator string(Vehiculo p)
         {
             StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine("CHASIS: {0}\r\n", p.chasis);
-            sb.AppendLine("MARCA : {0}\r\n", p.marca.ToString());
-            sb.AppendLine("COLOR : {0}\r\n", p.color.ToString());
+            sb.AppendFormat("CHASIS: {0}\n\r", p.chasis);
+            sb.AppendFormat("MARCA : {0}\n\r", p.marca.ToString());
+            sb.AppendFormat("COLOR : {0}\n\r", p.color.ToString());
             sb.AppendLine("---------------------");
-
-            return sb;
+            return sb.ToString();
         }
-
         /// <summary>
         /// Dos vehiculos son iguales si comparten el mismo chasis
         /// </summary>
@@ -57,7 +84,22 @@ namespace Entidades
         /// <returns></returns>
         public static bool operator ==(Vehiculo v1, Vehiculo v2)
         {
-            return (v1.chasis == v2.chasis);
+            bool respuesta = false;
+            if((object)v1 == null && (object)v2 == null)
+            {
+                respuesta = true;
+            }
+            else
+            {
+                if((object)v1 != null && (object)v2 != null)
+                {
+                    if(v1.chasis.Substring(0,3) == v2.chasis.Substring(0, 3))
+                    {
+                        respuesta = true;
+                    }
+                }
+            }
+            return respuesta;
         }
         /// <summary>
         /// Dos vehiculos son distintos si su chasis es distinto
@@ -67,7 +109,30 @@ namespace Entidades
         /// <returns></returns>
         public static bool operator !=(Vehiculo v1, Vehiculo v2)
         {
-            return (v1.chasis == v2.chasis);
+            return !(v1 == v2);
         }
+        /// <summary>
+        /// Sobrecarga del metodo Equals
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(Object obj)
+        {
+            bool respuesta = false;
+            if (obj is Vehiculo)
+            {
+                respuesta = (Vehiculo)obj == this;
+            }
+            return respuesta;
+        }
+        /// <summary>
+        /// Sobrecarga del metodo GetHashCode
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 }
