@@ -9,17 +9,15 @@ namespace Clases_Instanciables
 {
     public sealed class Alumno : Universitario
     {
-        public enum EEstadoCuenta { AlDia , Deudor , Becario}
+        public enum EEstadoCuenta { AlDia , Deudor , Becado}
 
         private Universidad.Eclases claseQueToma;
         private EEstadoCuenta estadoCuenta;
 
         #region "Constructor"
         public Alumno()
+            :this(0,"","","",ENacionalidad.Argentino,Universidad.Eclases.Laboratorio)       //VALORES POR DEFECTO
         {
-            //si se llama este contructor automaticamente llama primero a Universitario(), y este a Persona()
-            //inicializar atributos?
-            //pasa al otro constructor inicializando por defecto?
         }
         public Alumno(int id, string nombre, string apellido, string dni, ENacionalidad nacionalidad, Universidad.Eclases claseQueToma)
             :base(id,nombre,apellido,dni,nacionalidad)
@@ -38,13 +36,14 @@ namespace Clases_Instanciables
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(base.MostrarDatos());
-            sb.AppendFormat("ESTADO DE CUENTA: {0}", this.estadoCuenta);
+            sb.AppendFormat("ESTADO DE CUENTA: {0}\n", this.estadoCuenta);
             sb.Append(this.ParticiparEnClase());
+            sb.AppendLine();
             return sb.ToString();
         }
         protected override string ParticiparEnClase()
         {
-            return "TOMA CLASES DE: " + this.claseQueToma;
+            return "TOMA CLASES DE: " + this.claseQueToma + "\n";
         }
         public override string ToString()
         {
@@ -57,18 +56,14 @@ namespace Clases_Instanciables
         {
             bool respuesta = false;
             if(a.claseQueToma == clase && a.estadoCuenta != EEstadoCuenta.Deudor)
-            {
                 respuesta = true;
-            }
             return respuesta;
         }
         public static bool operator !=(Alumno a, Universidad.Eclases clase)
         {
             bool respuesta = false;
             if (a.claseQueToma != clase)
-            {
                 respuesta = true;
-            }
             return respuesta;
         }
         #endregion

@@ -24,5 +24,29 @@
       <FileName>Alumno.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Clases_Instanciables.Jornada">
+    <Position X="10" Y="0.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAESAAAAAgAAAAAAAAAAIQAAACEAiA=</HashCode>
+      <FileName>Jornada.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Clases_Instanciables.Universidad">
+    <Position X="10" Y="4.75" Width="4.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Clases_Instanciables.Universidad.Eclases">
+        <TypeIdentifier>
+          <NewMemberFileName>Universidad.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAEyAAAAAgAAgAAAAAAAIEAAAAAAiA=</HashCode>
+      <FileName>Universidad.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

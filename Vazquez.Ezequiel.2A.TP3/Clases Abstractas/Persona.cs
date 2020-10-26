@@ -10,7 +10,7 @@ namespace Clases_Abstractas
 {
     public abstract class Persona
     {
-        public enum ENacionalidad {Argentina,Extranjera}
+        public enum ENacionalidad {Argentino,Extranjero}
 
         private string nombre;
         private string apellido;
@@ -19,16 +19,10 @@ namespace Clases_Abstractas
 
         #region "Constructor"
         public Persona()
+            :this("","",ENacionalidad.Argentino)                  //VALORES POR DEFECTO
         {
-            //inicializar atributos?
-            //pasa al otro constructor inicializando por defecto?
-
-            //this.Nombre = "";
-            //this.Apellido = "";
-            //this.Nacionalidad = ENacionalidad.Argentina;
         }
         public Persona(string nombre, string apellido, ENacionalidad nacionalidad)
-            :this()
         {
             this.Nombre = nombre;
             this.Apellido = apellido;
@@ -78,11 +72,11 @@ namespace Clases_Abstractas
         {
             switch (nacionalidad)
             {
-                case ENacionalidad.Argentina:
+                case ENacionalidad.Argentino:
                     if (dato < 1 || dato > 89999999)
                         throw new NacionalidadInvalidaException(dato.ToString());
                     break;
-                case ENacionalidad.Extranjera:
+                case ENacionalidad.Extranjero:
                     if (dato < 89999999 || dato > 99999999)
                         throw new NacionalidadInvalidaException();
                     break;

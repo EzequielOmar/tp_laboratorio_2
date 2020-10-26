@@ -11,13 +11,10 @@ namespace Clases_Abstractas
         private int legajo;
 
         #region "Constructor"
-        public Universitario()
+    
+        public Universitario()             //VALORES POR DEFECTO
+            : this(0,"","","",ENacionalidad.Argentino)
         {
-            //si se llama este contructor automaticamente llama primero a Persona()
-            //pasa al otro constructor inicializando por defecto?
-            //inicializar legajo en 0?
-
-            //this.legajo = 0;
         }
         public Universitario(int legajo, string nombre, string apellido, string dni, ENacionalidad nacionalidad)
             :base(nombre,apellido,dni,nacionalidad)
@@ -40,9 +37,10 @@ namespace Clases_Abstractas
         #region "Sobrecargas"
         public static bool operator ==(Universitario pg1, Universitario pg2)
         {
-            ///Dos Universitario serán iguales si y sólo si son del mismo Tipo y su Legajo o DNI son iguales.
             bool respuesta = false;
-            //como era para saber que clase hija es y comparar? :O:O:O
+            if(pg1.GetType().Name == pg2.GetType().Name && pg1.legajo == pg2.legajo)
+                respuesta = true;
+            return respuesta;
         }
         public static bool operator !=(Universitario pg1, Universitario pg2)
         {
@@ -52,9 +50,7 @@ namespace Clases_Abstractas
         {
             bool respuesta = false;
             if (obj is Universitario)
-            {
                 respuesta = (Universitario)obj == this;
-            }
             return respuesta;
         }
         #endregion

@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BD2EFE03-536F-4818-8CF2-B0BE5784C32C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Clases_Instanciables</RootNamespace>
-    <AssemblyName>Clases Instanciables</AssemblyName>
+    <ProjectGuid>{BA6D997B-9301-4854-8DD2-A226976FB0E4}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TEST</RootNamespace>
+    <AssemblyName>TEST</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,24 +43,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alumno.cs" />
-    <Compile Include="Jornada.cs" />
-    <Compile Include="Profesor.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Universidad.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Clases Abstractas\Clases Abstractas.csproj">
       <Project>{be86ee23-35ea-4347-8c66-2533789f432e}</Project>
       <Name>Clases Abstractas</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Clases Instanciables\Clases Instanciables.csproj">
+      <Project>{bd2efe03-536f-4818-8cf2-b0be5784c32c}</Project>
+      <Name>Clases Instanciables</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Excepciones\Excepciones.csproj">
       <Project>{3c597b3e-eb4b-467e-8fda-4a517f4b09fd}</Project>
       <Name>Excepciones</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CD-Instanciables.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
