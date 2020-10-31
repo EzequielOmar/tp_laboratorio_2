@@ -4,18 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Excepciones;
+using Archivos;
 
 namespace Clases_Instanciables
 {
     public class Universidad
     {
-        public enum Eclases { Programacion, Laboratorio, Legislacion, SPD }
-
+        public enum EClases { Programacion, Laboratorio, Legislacion, SPD }
         private List<Alumno> alumnos;
         private List<Jornada> jornada;
         private List<Profesor> profesores;
 
         #region "Constructores"
+        /// <summary>
+        /// Crea una instancia de Universidad
+        /// inicializa valores alumnos, jornada, profesores
+        /// </summary>
         public Universidad()
         {
             this.alumnos = new List<Alumno>();
@@ -53,31 +57,63 @@ namespace Clases_Instanciables
             {
                 if (indice >= 0 && indice < this.jornada.Count)
                     this.jornada[indice] = value;
-                /*                                                         NO FUNCIONA, ERROR MAS ABAJO
-                else if (indice == this.jornada.Count)
-                    this.jornada.Add(value);
-                */
             }
         }
         #endregion
 
         #region "Mètodos Estàticos"
-        //guardar 
-        // leer
+        /// <summary>
+        /// Guarda los datos de una instancia del tipo Universidad
+        /// en un archivo formato Xml.
+        /// </summary>
+        /// <param name="uni"></param>
+        /// <returns></returns>
+        public static bool Guardar(Universidad uni)
+        {
+            bool respuesta = false;
+            Xml < Universidad > xmlUni= new Xml<Universidad>();
+            if (xmlUni.Guardar("Universidad.xml", uni))
+                respuesta = true;
+            return respuesta;
+        }
+        /// <summary>
+        /// Lee los datos de una instancia del tipo Universidad
+        /// desde un archivo en formato Xml.
+        /// </summary>
+        /// <returns></returns>
+        public static Universidad Leer()
+        {
+
+            Universidad uni = new Universidad();
+            Xml<Universidad> xmlUni = new Xml<Universidad>();
+            xmlUni.Leer("Universidad.xml", out uni);
+            return uni;
+        }
+        /// <summary>
+        /// Retorna un string con los datos de todas las jornadas
+        /// </summary>
+        /// <param name="uni"></param>
+        /// <returns></returns>
         private static string MostrarDatos(Universidad uni)
         {
             StringBuilder sb = new StringBuilder();
             foreach(Jornada aux in uni.jornada)
             {
+                sb.Append("<------------------------------------------------->\n");
                 sb.Append("JORNADA:\n");
                 sb.Append(aux.ToString());
-                sb.Append("\n<------------------------------------------------->\n");
+                sb.Append("<------------------------------------------------->\n");
             }
             return sb.ToString();        
         }
         #endregion
 
         #region "Mètodos"
+        /// <summary>
+        /// sobreescribe el metodo ToString()
+        /// llama al metodo MostrarDatos y retorna string
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return MostrarDatos(this);
@@ -85,65 +121,128 @@ namespace Clases_Instanciables
         #endregion
 
         #region "Sobrecargas"
-        public static Universidad operator +(Universidad uni, Eclases clases) 
+        /// <summary>
+        /// Comprueba que el valor del tipo Eclases NO exista en ninguna de las jornadas
+        /// cargadas en la Universidad, de ser asi, crea la jornada con esa clase,
+        /// la agrega a la lista de jornadas, agrega a un profesor de haber disponible,
+        /// y agrega a todos los alumnos que vallan a cursar esa clase
+        /// </summary>
+        /// <param name="uni"></param>
+        /// <param name="clases"></param>
+        /// <returns></returns>
+        public static Universidad operator +(Universidad uni, EClases clases) 
         {
-            /*Al agregar una clase a un Universidad se deberá generar y agregar una nueva Jornada indicando la clase,
-            un Profesor que pueda darla(según su atributo ClasesDelDia) y la lista de alumnos que la toman(todos los que
-            coincidan en su campo ClaseQueToma).
-            */
             int index = uni.jornada.FindIndex(x => x.Clase == clases);
             if (index == -1)
             {
-                //uni.jornada[uni.jornada.Count] = new Jornada(clases, uni == clases); ERROR EN EJECUCION OBJECT NULL
                 uni.jornada.Add(new Jornada(clases, uni == clases));
                 foreach (Alumno aux in uni.alumnos)
-                    if(!(aux != clases))
-                        uni.jornada[uni.jornada.Count - 1].Alumnos.Add(aux);
+                    if (!(aux != clases))
+                        uni.jornada[uni.jornada.Count - 1] += aux;
             }
             return uni;
         }
+        /// <summary>
+        /// Comprueba que el profesor NO exista en la lista de profesores,
+        /// de ser asi, lo agrega a la lista.
+        /// </summary>
+        /// <param name="uni"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public static Universidad operator +(Universidad uni, Profesor i)
         {
             if (uni.profesores.FindIndex(x => x == i) == -1)
                 uni.profesores.Add(i);
             return uni;
         }
+        /// <summary>
+        /// Comprueba que el alumno NO exista en la lista de alumnos,
+        /// de ser asi, lo agrega a la lista.
+        /// </summary>
+        /// <param name="uni"></param>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static Universidad operator +(Universidad uni, Alumno a)
         {
-            if (uni.alumnos.FindIndex(x => x == a) == -1)
+            if (uni.alumnos.FindIndex(x => x == a || x.DNI == a.DNI) == -1)
                 uni.alumnos.Add(a);
             else
                 throw new AlumnoRepetidoException();
             return uni;
         }
-        public static Profesor operator ==(Universidad uni, Eclases clases)
+        /// <summary>
+        /// Compara una instancia de Universidad y un valor del tipo EClases
+        /// retorna true si existe un profesor disponible para dar esa clase
+        /// caso contrario lanza SinProfesorException
+        /// </summary>
+        /// <param name="uni"></param>
+        /// <param name="clases"></param>
+        /// <returns></returns>
+        public static Profesor operator ==(Universidad uni, EClases clases)
         {
-            int index = uni.profesores.FindIndex(x => x == clases);
+            int index = uni.profesores.FindIndex(x => x == clases );
             if (index != -1)
                 return uni.profesores.ElementAt(index);
             else
                 throw new SinProfesorException();
         }
-        public static Profesor operator !=(Universidad uni, Eclases clases)
+        /// <summary>
+        /// Compara una instancia de Universidad y un valor del tipo EClases
+        /// retorna true si NO existe un profesor disponible para dar esa clase
+        /// caso contrario lanza SinProfesorException.
+        /// </summary>
+        /// <param name="uni"></param>
+        /// <param name="clases"></param>
+        /// <returns></returns>
+        public static Profesor operator !=(Universidad uni, EClases clases)
         {
             int index = uni.profesores.FindIndex(x => x != clases);        
             if (index != -1)
                 return uni.profesores.ElementAt(index);
             else
-                throw new SinProfesorException();
+                throw new SinProfesorException("No hay profesor que no pueda dar la clase.");
         }
+        /// <summary>
+        /// Compara una instancia de Universidad y una instancia de Profesor
+        /// retorna true si el profesor esta en la lista de profesores.
+        /// </summary>
+        /// <param name="uni"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public static bool operator ==(Universidad uni, Profesor i)
         {
             return uni.profesores.Contains(i);
         }
+        /// <summary>
+        /// Compara una instancia de Universidad y una instancia de Profesor
+        /// retorna true si el profesor NO esta en la lista de profesores.
+        /// </summary>
+        /// <param name="uni"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public static bool operator !=(Universidad uni, Profesor i)
         {
             return !(uni == i);
         }
+        /// <summary>
+        /// Compara una instancia de Universidad y una instancia de Alumno
+        /// retorna true si el Alumno esta en la lista de Alumnos.
+        /// </summary>
+        /// <param name="uni"></param>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static bool operator ==(Universidad uni, Alumno a)
         {
             return uni.alumnos.Contains(a);
         }
+        /// <summary>
+        /// Compara una instancia de Universidad y una instancia de Alumno
+        /// retorna true si el Alumno NO esta en la lista de Alumnos.
+        /// 
+        /// </summary>
+        /// <param name="uni"></param>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static bool operator !=(Universidad uni, Alumno a)
         {
             return !(uni == a);
@@ -151,12 +250,3 @@ namespace Clases_Instanciables
         #endregion
     }
 }
-
-/*
-• Se accederá a una Jornada específica a través de un indexador.
-• Al agregar una clase a un Universidad se deberá generar y agregar una nueva Jornada indicando la clase,
-un Profesor que pueda darla (según su atributo ClasesDelDia) y la lista de alumnos que la toman (todos los que
-coincidan en su campo ClaseQueToma).
-• Guardar de clase serializará los datos del Universidad en un XML, incluyendo todos los datos de sus Profesores, Alumnos y Jornadas.
-• Leer de clase retornará un Universidad con todos los datos previamente serializados.
- * */
