@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Entidades.Carrito&lt;T&gt;">
+    <Position X="1" Y="7.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAEAAAACQGAABAAAAAACAABAAAAAACGCAAQAAAAA=</HashCode>
+      <FileName>Carrito.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Entidades.ExtencionCarrito">
+    <Position X="4.75" Y="7.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAEAAIAAAAAAAA=</HashCode>
+      <FileName>ExtencionCarrito.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entidades.Texto">
+    <Position X="0.75" Y="1.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAQAQAAAEgAAgAAIQgAAAAAAAAAAAAAAAAnQ=</HashCode>
+      <FileName>Texto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entidades.Revista">
+    <Position X="4.75" Y="0.5" Width="5.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Entidades.Revista.EGenerosRevista" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Revista.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Revista.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entidades.Libro">
+    <Position X="5" Y="4" Width="5" />
+    <NestedTypes>
+      <Enum Name="Entidades.Libro.EGenerosLibro" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Libro.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Libro.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entidades.Enciclopedia">
+    <Position X="9.25" Y="7" Width="6" />
+    <NestedTypes>
+      <Enum Name="Entidades.Enciclopedia.EGenerosEnciclopedia" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Enciclopedia.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enciclopedia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Entidades.IDescuentoMedioDePago">
+    <Position X="4.75" Y="9.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAQEAAAAAAAAACAAAAAAAAAACAAAQAAAAA=</HashCode>
+      <FileName>IDescuentoMedioDePago.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Entidades.ETipoMedioDePago">
+    <Position X="8.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CQAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAI=</HashCode>
+      <FileName>IDescuentoMedioDePago.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

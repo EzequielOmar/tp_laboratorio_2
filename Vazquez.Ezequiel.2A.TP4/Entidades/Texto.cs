@@ -8,72 +8,59 @@ namespace Entidades
 {
     public abstract class Texto
     {
-        public enum EFormato { Digital, Fìsico };
-
         private Int32 _codigo;
         private string _titulo;
         private double _precio;
-        private EFormato _formato;
-        private string _stock;
+        private Int32 _stock;
 
         #region Propiedades
-        public Int32 Stock
+        public Int32 Codigo
         {
-            get
-            {
-                if (this._formato == EFormato.Fìsico)
-                {
-                    return Int32.Parse(this._stock);
-                }
-                else
-                {
-                    if (this._stock == "-")
-                    {
-                        return 1;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                }
-            }
-            set
-            {
-                if (this._formato == EFormato.Fìsico)
-                {
-                    this._stock = value.ToString();
-                }
-            }
+            get { return this._codigo; }
+            set { this._codigo = value; }
         }
+        public string Titulo
+        {
+            get { return this._titulo; }
+            set { this._titulo = value; }
+        }
+        public string Tipo
+        {
+            get { return this.GetType().ToString().Replace("Entidades.", ""); }
+        }
+        public abstract string Genero { get; set; }
         public double Precio
         {
-            get
-            {
-                return this._precio*this.Stock;
-            }
+            get { return this._precio; }
+            set { this._precio = value; }
+        }
+        public Int32 Stock
+        {
+            get { return this._stock; }
+            set { this._stock = value; }
         }
         #endregion
 
         #region Constructores
-        private Texto(Int32 codigo, string titulo, double precio, EFormato formato)
+        public Texto()
+        {
+        }
+        public Texto(Int32 codigo, string titulo, double precio, Int32 stock)
         {
             this._codigo = codigo;
             this._titulo = titulo;
             this._precio = precio;
-            this._formato = formato;
-        }
-        public Texto(Int32 codigo, string titulo, double precio, Int32 stock)
-            :this(codigo,titulo,precio,EFormato.Fìsico)
-        {
             this.Stock = stock;
-        }
-        public Texto(Int32 codigo, string titulo, double precio)
-            :this(codigo,titulo,precio, EFormato.Digital)
-        {
-            this._stock = "-";
         }
         #endregion
         #region Sobrecargas
+        /// <summary>
+        /// Sobrecarga del operador ==
+        /// retorna true si el tipo y el codigo entre las instancias de Texto son iguales.
+        /// </summary>
+        /// <param name="t1">Instancia de Texto</param>
+        /// <param name="t2">Instancia de Texto</param>
+        /// <returns></returns>
         public static bool operator ==(Texto t1,Texto t2)
         {
             bool rta = false;
@@ -83,21 +70,40 @@ namespace Entidades
             }
             return rta;
         }
+        /// <summary>
+        /// Sobrecarga del operador ==
+        /// retorna true si el tipo o el codigo entre las instancias de Texto son distintos.
+        /// </summary>
+        /// <param name="t1">Instancia de Texto</param>
+        /// <param name="t2">Instancia de Texto</param>
+        /// <returns></returns>
         public static bool operator !=(Texto t1, Texto t2)
         {
             return !(t1 == t2);
         }
-
+        /// <summary>
+        /// Sobrecarga del operador Equals
+        /// retorna true si el tipo y el codigo entre las instancias de Texto son iguales.
+        /// utiliza sobrecarga del == interna de clase Texto
+        /// </summary>
+        /// <param name="t1">Instancia de Texto</param>
+        /// <param name="t2">Instancia de Texto</param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             return (Texto)obj == this;
         }
+        /// <summary>
+        /// override del metodo ToString()
+        /// retorna el elemento en formato un.  titulo  (precio unitario) precio final.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             if(this.Stock > 1)
             {
-                sb.AppendFormat("{0}  \"{1}\"  (${2})  ${3}\n", this._stock, this._titulo, this._precio, this.Precio);
+                sb.AppendFormat("{0}  \"{1}\"  (${2})  ${3}\n", this._stock, this._titulo, this._precio, this._precio*this.Stock);
             }
             else
             {

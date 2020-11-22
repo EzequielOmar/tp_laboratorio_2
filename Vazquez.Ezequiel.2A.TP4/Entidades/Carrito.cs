@@ -3,23 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Entidades
 {
     public class Carrito<T> : IDescuentoMedioDePago where T : Texto
     {
-        private Int32 _cantItems;
         private List<T> _items;
 
         #region Propiedades
         public List<T> Items
         {
             get { return this._items; }
-        }
-        public Int32 CantItems
-        {
-            get { return this._cantItems; }
-            set { this._cantItems = value; }
         }
         public double PrecioParcial
         {
@@ -35,14 +30,17 @@ namespace Entidades
         public Carrito()
         {
             this._items = new List<T>();
-            this._cantItems = 0;
         }
         #endregion
 
         #region Metodos de instancia publicos
+        /// <summary>
+        /// Retorna un string que representa el ticket de la transaccion de compra.
+        /// Detallando sumas parciales, y descuento por medio de pago.
+        /// </summary>
+        /// <returns></returns>
         public string RealizarVenta()
         {
-            //CalcularDescuentoMedioDePago();
             StringBuilder sb = new StringBuilder();
             sb.Append("******** LIBRERIA -EL OLIMPO- ********\n");
             sb.Append("La habana, 3314 - CABA \n");
@@ -54,43 +52,33 @@ namespace Entidades
                 sb.Append(aux.ToString());
             }
             sb.AppendFormat("\nSubtotal: ${0}\n", this.PrecioParcial);
-            double descuento = CalcularDescuentoMedioDePago();
-            ///
-            /// VER PORQUE ESTO ES UN CHOTASO
-            ///
-            switch (this.MedioDePago)
-            {
-                case ETipoMedioDePago.Efectivo:
-                    sb.AppendFormat("\nDescuento por medio de pago: {0}%  ${1}\n", this.DescuentoEfectivo, descuento);
-                    break;
-                case ETipoMedioDePago.Crédito:
-                    sb.AppendFormat("\nDescuento por medio de pago: {0}%  ${1}\n", this.DescuentoCredito, descuento);
-                    break;
-                case ETipoMedioDePago.Débito:
-                    sb.AppendFormat("\nDescuento por medio de pago: {0}%  ${1}\n", this.DescuentoDebito, descuento);
-                    break;
-                case ETipoMedioDePago.MercadoPago:
-                    sb.AppendFormat("\nDescuento por medio de pago: {0}%  ${1}\n", this.DescuentoMercadoPago, descuento);
-                    break;
-            }
+            sb.AppendFormat("\nDescuento por medio de pago: {0}%  ${1}\n", this.DescuentoUsado, CalcularDescuentoMedioDePago());
             sb.AppendFormat("\nTotal: ${0}\n", this.PrecioFinal);
             return sb.ToString();
         }
         #endregion
 
         #region Metodos de instancia privados
+        /// <summary>
+        /// Calcula el precio parcial de los items en el carrito
+        /// Retorna double la suma de items.precio * item.stock
+        /// </summary>
+        /// <returns></returns>
         private double CalcularPrecioParcial()
         {
             double contador = 0;
             foreach (T aux in this._items)
             {
-                contador += aux.Precio;
+                contador += (aux.Precio*aux.Stock);
             }
             return contador;
         }
+        /// <summary>
+        /// Calcula el precio final restandole el descuento por medio de pago al precio parcial
+        /// </summary>
+        /// <returns></returns>
         private double CalcularPrecioFinal()
         {
-
             return this.PrecioParcial - CalcularDescuentoMedioDePago();
         }
         #endregion
@@ -101,26 +89,37 @@ namespace Entidades
         public double DescuentoCredito { get; set; }
         public double DescuentoDebito { get; set; }
         public double DescuentoMercadoPago { get; set; }
-
+        public double DescuentoUsado
+        {
+            get
+            {
+                double aux = 0;
+                switch (this.MedioDePago)
+                {
+                    case ETipoMedioDePago.Efectivo:
+                        aux =  this.DescuentoEfectivo;
+                        break;
+                    case ETipoMedioDePago.Crédito:
+                        aux = this.DescuentoCredito;
+                        break;
+                    case ETipoMedioDePago.Débito:
+                        aux = this.DescuentoDebito;
+                        break;
+                    case ETipoMedioDePago.MercadoPago:
+                        aux = this.DescuentoMercadoPago;
+                        break;
+                }
+                return aux;
+            }
+        }
+        /// <summary>
+        /// Calcula el valor en pesos del descuento por medio de pago
+        /// this.PrecioParcial * (this.DescuentoUsado / 100)
+        /// </summary>
+        /// <returns></returns>
         public double CalcularDescuentoMedioDePago()
         {
-            double aux = 0;
-            switch (this.MedioDePago)
-            {
-                case ETipoMedioDePago.Efectivo:
-                    aux = this.PrecioParcial * (this.DescuentoEfectivo/100);
-                    break;
-                case ETipoMedioDePago.Crédito:
-                    aux = this.PrecioParcial * (this.DescuentoCredito / 100);
-                    break;
-                case ETipoMedioDePago.Débito:
-                    aux = this.PrecioParcial * (this.DescuentoDebito / 100);
-                    break;
-                case ETipoMedioDePago.MercadoPago:
-                    aux = this.PrecioParcial * (this.DescuentoMercadoPago / 100);
-                    break;
-            }
-            return aux;
+            return this.PrecioParcial * (this.DescuentoUsado / 100);
         }
         #endregion
 

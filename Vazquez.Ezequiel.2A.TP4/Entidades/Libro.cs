@@ -11,20 +11,23 @@ namespace Entidades
         public enum EGenerosLibro { Policial,Novela,Ficción,Biográfico }
 
         private EGenerosLibro _genero;
-        private string _autor;
+
+        #region Propiedades
+        public override string Genero
+        {
+            get { return this._genero.ToString(); }
+            set { this._genero = (EGenerosLibro)Enum.Parse(typeof(EGenerosLibro), value); }
+        }
+        #endregion
 
         #region Constructores
-        public Libro(Int32 codigo, string titulo, double precio, EGenerosLibro genero,string autor, Int32 stock)
-            :base(codigo, titulo,precio,stock)    
+        public Libro()
         {
-            this._genero = genero;
-            this._autor = autor;
         }
-        public Libro(Int32 codigo, string titulo, double precio, EGenerosLibro genero,string autor)
-           : base(codigo, titulo, precio)
+        public Libro(Int32 codigo, string titulo, double precio, EGenerosLibro genero,Int32 stock)
+            :base(codigo,titulo,precio,stock)    
         {
             this._genero = genero;
-            this._autor = autor;
         }
         #endregion
     }
